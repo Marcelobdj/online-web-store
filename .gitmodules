@@ -1,0 +1,3 @@
+[submodule "online-web-store-frontend"]
+	path = online-web-store-frontend
+	url = git@github.com:Marcelobdj/online-web-store-frontend.git
