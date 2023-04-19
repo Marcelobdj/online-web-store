@@ -15,6 +15,8 @@ app.use("/api/users", userRoutes);
 const cartRoutes = require("./routes/carts");
 app.use("/api/carts", cartRoutes);
 
+const orderRoutes = require("./routes/orders");
+app.use("/api/orders", orderRoutes);
 
 const mongoURI = "mongodb://206.189.200.26:27018/web-store-database";
 mongoose.connect(mongoURI, {
