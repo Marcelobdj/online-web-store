@@ -9,6 +9,9 @@ app.use(express.json());
 const productRoutes = require("./routes/products");
 app.use("/api/products", productRoutes);
 
+const userRoutes = require("./routes/users");
+app.use("/api/users", userRoutes);
+
 const mongoURI = "mongodb://206.189.200.26:27018/web-store-database";
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
