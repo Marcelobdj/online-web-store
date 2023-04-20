@@ -20,6 +20,13 @@ const UserSchema = new mongoose.Schema(
             enum: ["user", "admin"],
             default: "user",
         },
+        emailConfirmed: {
+            type: Boolean,
+            default: false,
+        },
+        emailConfirmationToken: {
+            type: String,
+        },
     },
     {
         timestamps: true,

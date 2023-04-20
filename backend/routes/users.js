@@ -3,6 +3,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const authMiddleware = require("../middlewares/auth");
+const crypto = require("crypto");
+const sendEmail = require("../mailer");
+
 
 const router = express.Router();
 
@@ -59,7 +62,7 @@ router.post("/register", async (req, res) => {
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
+            return res.status(400).json({ message: "E-mail already exists" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -67,10 +70,19 @@ router.post("/register", async (req, res) => {
             name,
             email,
             password: hashedPassword,
+            emailConfirmationToken,
         });
 
         await user.save();
-        res.status(201).json({ message: "User registered successfully" });
+        // Send confirmation email
+        const emailConfirmationUrl = `http://localhost:3000/email-confirmation/${emailConfirmationToken}`;
+        await sendEmail({
+            to: user.email,
+            subject: "Email Confirmation - Online Web Store",
+            text: `Please click the following link to confirm your email address: ${emailConfirmationUrl}`,
+            html: `<p>Please click the following link to confirm your email address: <a href="${emailConfirmationUrl}">${emailConfirmationUrl}</a></p>`,
+        });
+        res.status(201).json({ message: "E-mail registered successfully" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Error during registration" });
